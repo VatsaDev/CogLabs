@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vlabs</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@700&display=swap"
+    />
+    <link rel="shortcut icon" type="image/x-icon" href="imgs/favicon.png" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <script src="scripts/nav.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+    <script src="scripts/frameworks.js"></script>
+  </head>
+  <body id="body">
+    <header>
+      <h1>Vlabs</h1>
+      <p>Test Frontend code</p>
+    </header>
+    <br /><br />
+    <nav>
+      <a onclick="openNav()"> &#43; FrameWorks</a>
+      <a href="docs/main.md">Docs</a>
+    </nav>
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
+        &times;
+      </a>
+      <h1>Frameworks</h1>
+      <a onclick="addAframe()">
+        <img src="imgs/aframe.png" width="64" height="64" />
+      </a>
+      <a onclick="addThree()">
+        <img src="imgs/three.jpg" width="64" height="64" />
+      </a>
+    </div>
+    <div class="editor">
+      <iframe id="output" width="90%" height="500px"></iframe>
+      <br />
+      <p>Html:</p>
+      <div id="html-code" contenteditable="true"></div>
+      <br />
+      <p>Css:</p>
+      <div id="css-code" contenteditable="true"></div>
+      <br />
+      <p>Js:</p>
+      <div id="js-code" contenteditable="true"></div>
+      <br />
+      <button onclick="run()">Run</button>
+    </div>
+    <script>
+      function run() {
+        let htmlCode = document.querySelector(".editor #html-code").textContent;
+        let cssCode =
+          "<style>" +
+          document.querySelector(".editor #css-code").textContent +
+          "</style>";
+        let jsCode = document.querySelector(".editor #js-code").textContent;
+        let output = document.querySelector(".editor #output");
+        output.contentDocument.body.innerHTML = htmlCode + cssCode;
+        output.contentWindow.eval(jsCode);
+      }
+
+      var iframe = document.getElementById("output");
+      iframe.contentWindow.document.body.style.color = "white";
+      iframe.contentWindow.document.body.style.backgroundColor = "#1e1e1e";
+    </script>
+    <p>© 2020 VatsaDev, All rights reserved</p>
+  </body>
+</html>
