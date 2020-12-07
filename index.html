@@ -4,69 +4,115 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vlabs</title>
+    <script src="https://rawgithub.com/ajaxorg/ace-builds/master/src/ace.js"></script>
+    <script src="https://rawgithub.com/ajaxorg/ace-builds/master/src/ext-emmet.js"></script>
+    <script src="https://rawgithub.com/nightwing/emmet-core/master/emmet.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"
+      integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q=="
+      crossorigin="anonymous"
+    ></script>
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@700&display=swap"
     />
-    <link rel="shortcut icon" type="image/x-icon" href="imgs/favicon.png" />
-    <link rel="stylesheet" href="styles/styles.css" />
-    <script src="scripts/nav.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
-    <script src="scripts/frameworks.js"></script>
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="shortcut icon" type="image/x-icon" href="imgs/favicon.svg" />
   </head>
-  <body id="body">
+  <body>
     <header>
       <h1>Vlabs</h1>
-      <p>Test Frontend code</p>
     </header>
-    <br /><br />
-    <nav>
-      <a onclick="openNav()"> &#43; FrameWorks</a>
-      <a href="https://github.com/VatsaDev/Vlabs/blob/main/docs/main.md">Docs</a>
-    </nav>
-    <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
-        &times;
-      </a>
-      <h1>Frameworks</h1>
-      <a onclick="addAframe()">
-        <img src="imgs/aframe.png" width="64" height="64" />
-      </a>
-      <a onclick="addThree()">
-        <img src="imgs/three.jpg" width="64" height="64" />
-      </a>
+    <div id="editor-html">&lt;!-- html --&gt;</div>
+    <div id="editor-css">/* css */</div>
+    <div id="editor-js">//javascript</div>
+    <iframe id="output" frameborder="0"></iframe>
+    <i
+      class="fa fa-gear fa-spin"
+      id="settings"
+      style="
+        position: absolute;
+        top: 10px;
+        left: 16px;
+        background-color: #1e1e1e;
+        color: #cac4c4;
+        font-size: 50px;
+      "
+    ></i>
+    <button onclick="run()" class="button">run</button>
+    <div id="popup" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>welcome to settings</h2>
+        <div class="dropdown">
+          <button class="dropbtn">
+            toggle view <i class="fa fa-eye" aria-hidden="true"></i>
+          </button>
+          <div class="dropdown-content">
+            <span onclick="setDefault()"
+              ><a href="#"><img src="imgs/tog-1.svg" alt="toggle 1" /></a
+            ></span>
+            <span onclick="setCodeBottom()"
+              ><a href="#"><img src="imgs/tog-2.svg" alt="toggle 2" /></a
+            ></span>
+            <span onclick="setCodeTop()"
+              ><a href="#"><img src="imgs/tog-3.svg" alt="toggle 3" /></a
+            ></span>
+            <span onclick="setCodeRight()"
+              ><a href="#"><img src="imgs/tog-4.svg" alt="toggle 4" /></a
+            ></span>
+            <span onclick="setResult()"
+              ><a href="#"><img src="imgs/tog-5.svg" alt="toggle 5" /></a
+            ></span>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn">
+            frameworks and stylesheets
+            <img src="imgs/frame.png" alt="frame" height="15" />
+          </button>
+          <div class="dropdown-content">
+            <textarea name="lib" id="lib" cols="60" rows="5"></textarea>
+            <button onclick="lib()">add framework or stylesheet</button>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn">
+            Meta Tags
+            <img src="imgs/tag.png" alt="meta" width="20" height="20" />
+          </button>
+          <div class="dropdown-content">
+            <textarea name="meta" id="meta" cols="60" rows="5"></textarea>
+            <button onclick="meta()">add meta</button>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn">Local save & get</button>
+          <div class="dropdown-content">
+            <button onclick="saveLocal()">Save to Local</button>
+            <button onclick="getLocal()">Get from Local</button>
+            <button onclick="makeFile()" id="file">download file</button>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn">boilerplate</button>
+          <div class="dropdown-content">
+            <button onclick="boilerplate('html5-min')">html5 minimum</button>
+            <button onclick="boilerplate('html5-meta')">html5 and meta</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="editor">
-      <iframe id="output" width="90%" height="500px"></iframe>
-      <br />
-      <p>Html:</p>
-      <div id="html-code" contenteditable="true"></div>
-      <br />
-      <p>Css:</p>
-      <div id="css-code" contenteditable="true"></div>
-      <br />
-      <p>Js:</p>
-      <div id="js-code" contenteditable="true"></div>
-      <br />
-      <button onclick="run()">Run</button>
-    </div>
-    <script>
-      function run() {
-        let htmlCode = document.querySelector(".editor #html-code").textContent;
-        let cssCode =
-          "<style>" +
-          document.querySelector(".editor #css-code").textContent +
-          "</style>";
-        let jsCode = document.querySelector(".editor #js-code").textContent;
-        let output = document.querySelector(".editor #output");
-        output.contentDocument.body.innerHTML = htmlCode + cssCode;
-        output.contentWindow.eval(jsCode);
-      }
-
-      var iframe = document.getElementById("output");
-      iframe.contentWindow.document.body.style.color = "white";
-      iframe.contentWindow.document.body.style.backgroundColor = "#1e1e1e";
-    </script>
-    <p>© 2020 VatsaDev, All rights reserved</p>
+    <script src="js/toggle.js"></script>
+    <script src="js/acesetup.js"></script>
+    <script src="js/showcode.js"></script>
+    <script src="js/popup.js"></script>
+    <script src="js/addContent.js"></script>
   </body>
 </html>
