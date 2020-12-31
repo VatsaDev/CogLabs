@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@500&display=swap');
+
+body {
+  background-color: #121212;
+  color: #cac4c4;
+  box-sizing: border-box;
+  font-family: 'Work Sans', sans-serif;
+}
+
+header {
+  margin: 50px;
+  border-radius: 50px;
+  background-color: #1e1e1e;
+  text-align: center;
+  margin: auto;
+  padding: 25px;
+}
+
+header h1 {
+  font-size: 50px;
+}
+
+header p {
+  font-size: 20px;
+}
+
+main {
+  margin: 25px;
+  border-radius: 25px;
+  padding: 25px;
+  background-color: #1e1e1e;
+}
+
+.NewCog {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  color: #cac4c4;
+  background-color: #202020;
+}
