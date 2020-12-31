@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id= "title">New Cog</title>
+    <script src="https://rawgithub.com/ajaxorg/ace-builds/master/src/ace.js"></script>
+    <script src="https://rawgithub.com/ajaxorg/ace-builds/master/src/ext-emmet.js"></script>
+    <script src="https://rawgithub.com/nightwing/emmet-core/master/emmet.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"
+      integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q=="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/remarkable/1.7.1/remarkable.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@700&display=swap"
+    />
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="shortcut icon" type="image/x-icon" href="imgs/favicon.svg" />
+  </head>
+  <body>
+    <header>
+      <h2 id = "edit" contenteditable="true">New Cog</h2>
+      <img
+        src="imgs/favicon.svg"
+        class="logo"
+      >
+      <i class="fas fa-gear fa-spin" id="settings"></i>
+    </header>
+    <div id="editor-html">&lt;!-- html --&gt;</div>
+    <div id="editor-css">/* css */</div>
+    <div id="editor-js">//javascript</div>
+    <iframe id="output" frameborder="0" style = "z-index: -10;"></iframe>
+    
+    <button onclick="run()" class="button">run</button>
+    <div id="popup" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>welcome to settings</h2>
+        <div class="tab">
+          <button class="tablinks" onclick="openTab(event, 'Editor')">
+            Editor Settings
+          </button>
+          <button class="tablinks" onclick="openTab(event, 'Save')">
+            Save
+          </button>
+          <button class="tablinks" onclick="openTab(event, 'Other')">
+            Other
+          </button>
+        </div>
+
+        <!-- Tab content -->
+        <div id="Editor" class="tabcontent">
+          <div class="dropdown">
+            <button class="dropbtn">Themes</button>
+            <div class="dropdown-content">
+              <button onclick="theme('monokai');">Monokai (dark)</button>
+              <button onclick="theme('dracula');">Dracula (dark)</button>
+              <button onclick="theme('github');">Github (light)</button>
+              <button onclick="theme('chrome');">Chrome (light)</button>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn">Preprocessor</button>
+            <div class="dropdown-content">
+              <h3 style="color: #cac4c4; margin: 10px">Html</h3>
+              <button onclick="preprocessor('norm');">Html (None)</button>
+              <button onclick="preprocessor('markdown');">Markdown</button>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn">
+              toggle view <i class="fa fa-eye" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown-content">
+              <span onclick="setDefault()"
+                ><a href="#"
+                  ><img
+                    src="imgs/tog-1.svg"
+                    alt="toggle 1"
+                    style="display: inline-block" /></a
+              ></span>
+              <span onclick="setCodeBottom()"
+                ><a href="#"
+                  ><img
+                    src="imgs/tog-2.svg"
+                    alt="toggle 2"
+                    style="display: inline-block" /></a
+              ></span>
+              <span onclick="setCodeTop()"
+                ><a href="#"
+                  ><img
+                    src="imgs/tog-3.svg"
+                    alt="toggle 3"
+                    style="display: inline-block" /></a
+              ></span>
+              <span onclick="setCodeRight()"
+                ><a href="#"
+                  ><img
+                    src="imgs/tog-4.svg"
+                    alt="toggle 4"
+                    style="display: inline-block" /></a
+              ></span>
+              <span onclick="setResult()"
+                ><a href="#"
+                  ><img
+                    src="imgs/tog-5.svg"
+                    alt="toggle 5"
+                    style="display: inline-block" /></a
+              ></span>
+            </div>
+          </div>
+        </div>
+
+        <div id="Save" class="tabcontent">
+          <div class="dropdown">
+            <button class="dropbtn">Offline save & get</button>
+            <div class="dropdown-content">
+              <button onclick="saveLocal()">Save to Local</button>
+              <input type="text" placeholder="script name..." id="script-save"></input>
+              <button onclick="getLocal()">Get from Local</button>
+              <input type="text"  placeholder="script name..." id="script-get">
+              <button onclick="makeFile()" id="file">download file</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="Other" class="tabcontent">
+          <div class="dropdown">
+            <button class="dropbtn">boilerplate</button>
+            <div class="dropdown-content">
+              <button onclick="boilerplate('html5-min');preprocessor('norm');">
+                html5 minimum
+              </button>
+              <button onclick="boilerplate('html5-meta');preprocessor('norm');">
+                html5 and meta
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/toggle.js"></script>
+    <script src="js/acesetup.js"></script>
+    <script src="js/showcode.js"></script>
+    <script src="js/popup.js"></script>
+    <script src="js/tabs.js"></script>
+    <script src="js/setTitle.js"></script>
+  </body>
+</html>
